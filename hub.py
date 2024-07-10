@@ -1,5 +1,6 @@
 import telebot
 from telebot import types
+f = {}
 token = "7487218942:AAG19VkhXheSjl_ULSC7EGj0f7Ns7YhtsV4"
 bot=telebot.TeleBot(token)
 @bot.message_handler(commands= ['start'])
@@ -9,8 +10,10 @@ def start(message):
     button1 = types.KeyboardButton("нажми на меня")
     button2 = types.KeyboardButton("нажми")
     button3 = types.KeyboardButton("кот")
+    f.update({message.from_user.id    :     message.from_user.first_name})
+    print(message)
     markup.add(button1,button2,button3)
-    bot.reply_to(message,f"{message.chat.id}")
+    bot.reply_to(message,f"{f}")
     bot.send_message(message.chat.id, 'привет',reply_markup=markup)
     
     
@@ -30,7 +33,7 @@ def plus(message):
 @bot.callback_query_handler(func=lambda call:call.data)
 def callback(call):
     if call.data == "to":
-        bot.send_message(call.message.chat.id, 'да котики милые')
+        bot.send_message(call.message.chat.id, f)
         
     if call.data == "one":
         photo = open('котик.jpg','rb')
